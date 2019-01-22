@@ -7,30 +7,7 @@ const uPattern = /^[a-zA-Z0-9_-]{4,16}$/
 const pPattern = /[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/
 const mPattern = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[7|8])|(18[0,5-9]))\d{8}$/;
 const user = {
-    /**
-     * @api {post} /api/user/state/disable 禁用用户
-     * @apiDescription 禁用用户
-     * @apiName disable
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiParam {string} ids 用户ID
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/state/disable
-     * @apiVersion 1.0.0
-     */
-    /**
-     * @api {post} /api/user/state/available 启用用户
-     * @apiDescription 启用用户
-     * @apiName available
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiParam {string} ids 用户ID
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/state/available
-     * @apiVersion 1.0.0
-     */
+    
     async disableUser(ctx, state) {
         let form = ctx.request.body
         let result = retCode.Success
@@ -76,20 +53,7 @@ const user = {
         return com.filterReturn(result)
     },
 
-    /**
-     * @api {post} /api/user/update/pwd 修改密码
-     * @apiDescription 修改密码
-     * @apiName updatePwd
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiParam {string} oldPwd 旧密码
-     * @apiParam {string} newPwd 新密码
-     * @apiParam {string} confirmPwd 确认密码
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/update/pwd
-     * @apiVersion 1.0.0
-     */
+   
     async updatePwd(ctx) {
         let form = ctx.request.body
         let result = retCode.Success
@@ -165,19 +129,7 @@ const user = {
         return result
     },
 
-    /**
-     * @api {post} /api/user/update 更新用户个人信息
-     * @apiDescription 更新用户个人信息
-     * @apiName update
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiParam {string} nickName 昵称
-     * @apiParam {string} avatarUrl 头像
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/update
-     * @apiVersion 1.0.0
-     */
+   
     async updateUserInfo(ctx) {
         let form = ctx.request.body
         let result = retCode.Success
@@ -210,26 +162,8 @@ const user = {
     },
 
 
-    /**
-     * @api {post} /api/user/get 用户查询
-     * @apiDescription 用户查询
-     * @apiName Get
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiParam {string} fields 查询字段 例('name,id') 传空代表查询所有
-     * @apiParam {string} wheres 查询条件 例('name=0 and id=3')
-     * @apiParam {string} sorts  查询排序 例('name desc, id asc')
-     * @apiParam {int} pageIndex  页码
-     * @apiParam {int} pageSize  每页条数
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/get
-     * @apiVersion 1.0.0
-     */
     async getList(ctx) {
-        ctx.request.body.tables = 'y_user left join area on y_user.a_id = area.pk_id '
-        ctx.request.body.wheres = ' y_user.is_delete = 0 '
-        ctx.request.body.fields = 'y_user.* , area.name'
+        ctx.request.body.tables = 'y_user '
         let auth = await com.jwtFun.checkAuth(ctx)
         if (auth.code == 1) {
             let result = await com.commonSelect.getList(ctx)
