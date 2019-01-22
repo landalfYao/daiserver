@@ -31,7 +31,7 @@ const app = {
         let result = retCode.Success
         let auth = await com.jwtFun.checkAuth(ctx)
         if (auth.code == 1) {
-            let bkdata = await model[method](form)
+            let bkdata = await model[method](method == 'update' ? form : form.id)
             if (bkdata.errno) {
                 if (bkdata.errno == 1062) {
                     result = retCode.Fail
@@ -56,7 +56,7 @@ const app = {
         if (auth.code == 1) {
             let result = await com.commonSelect.getList(ctx)
             if (result.args) {
-                let userResult = await usermodel.getList(result.args, result.ct)
+                let userResult = await model.getList(result.args, result.ct)
                 let bkdata = result.result
                 bkdata.data = userResult
                 let ct = result.ct.payload
