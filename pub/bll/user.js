@@ -7,7 +7,7 @@ const uPattern = /^[a-zA-Z0-9_-]{4,16}$/
 const pPattern = /[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/
 const mPattern = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[7|8])|(18[0,5-9]))\d{8}$/;
 const user = {
-    
+
     async disableUser(ctx, state) {
         let form = ctx.request.body
         let result = retCode.Success
@@ -53,7 +53,7 @@ const user = {
         return com.filterReturn(result)
     },
 
-   
+
     async updatePwd(ctx) {
         let form = ctx.request.body
         let result = retCode.Success
@@ -129,29 +129,18 @@ const user = {
         return result
     },
 
-   
+
     async updateUserInfo(ctx) {
         let form = ctx.request.body
         let result = retCode.Success
         let auth = await com.jwtFun.checkAuth(ctx)
         if (auth.code == 1) {
-            let bkdata = await usermodel.updateUserInfo({
-                nickName: form.nickName,
-                avatarUrl: form.avatarUrl,
-                uid: auth.uid
-            })
+            let bkdata = await usermodel.updateUserInfo(form)
             if (bkdata.errno) {
                 result = retCode.ServerError
                 result.msg = '服务端错误'
             } else {
-                db.setLog({
-                    uid: result.uid,
-                    ped_operation: '更新用户个人信息',
-                    operation_code: result.code,
-                    operation_msg: result.codeMsg,
-                    api_url: '/api/user/update'
-                })
-                result.data = (await usermodel.getUserInfo(auth.uid))[0]
+
                 delete result.uid
                 result.msg = '修改成功'
             }
@@ -290,14 +279,8 @@ const user = {
                         result.msg = '请输入8位以上密码，必须包含字母和数字'
                         return result
                     } else {
-                        let res = await usermodel.addUser({
-                            username: form.username,
-                            password: com.md5(form.password),
-                            dtype: form.dtype,
-                            a_id: form.a_id,
-                            phone: form.phone,
-                            deadline: form.deadline
-                        })
+                        form.password = com.md5(form.password)
+                        let res = await usermodel.addUser(form)
                         if (res.errno) {
                             return {
                                 code: res.errno,

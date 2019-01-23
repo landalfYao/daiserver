@@ -4,8 +4,8 @@ const user = {
 
   //新增用户
   async addUser(args) {
-    let sql = 'INSERT INTO y_user(username, pwd ,dtype,a_id,phone,deadline) VALUES(?, ?, ?,?,?,?)'
-    let params = [args.username, args.password, args.dtype, args.a_id, args.phone, args.deadline]
+    let sql = 'INSERT INTO y_user(username, pwd ,dtype,name,phone,price,msg) VALUES(?, ?,?,?,?,?,?)'
+    let params = [args.username, args.password, args.dtype, args.name, args.phone, args.price, args.msg]
     let result = await db.query(sql, params)
     return result
   },
@@ -48,8 +48,8 @@ const user = {
   },
   //修改个人信息
   async updateUserInfo(args) {
-    let sql = 'UPDATE y_user SET nick_name=?,avatar_url=? WHERE pk_id=?'
-    let params = [args.nickName, args.avatarUrl, args.uid]
+    let sql = 'UPDATE y_user SET name=?,phone=?,price=?,msg=? WHERE pk_id=?'
+    let params = [args.name, args.phone, args.msg, args.msg, args.id]
     return await db.query(sql, params)
   },
 

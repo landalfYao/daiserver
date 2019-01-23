@@ -19,7 +19,7 @@ const roles = require('./routes/roles')
 const wxuser = require('./routes/wxuser')
 const file = require('./routes/file')
 const order = require('./routes/order')
-
+const agents = require('./routes/agents')
 
 const koaBody = require('koa-body');
 app.use(koaBody({
@@ -90,6 +90,7 @@ app.use(roles.routes(), roles.allowedMethods())
 app.use(wxuser.routes(), wxuser.allowedMethods())
 app.use(file.routes(), file.allowedMethods())
 app.use(order.routes(), order.allowedMethods())
+app.use(agents.routes(), agents.allowedMethods())
 
 
 // error-handling 

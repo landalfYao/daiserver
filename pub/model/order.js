@@ -14,15 +14,15 @@ const app = {
         return result
     },
     //更新经纪人
-    async updateJJR(id) {
-        let sql = 'UPDATE orders set jjr=? where id =?'
-        let result = await db.query(sql, [id])
+    async updateJJR(args) {
+        let sql = 'UPDATE orders set jjr=? where id in (?)'
+        let result = await db.query(sql, [args.jid, args.id])
         return result
     },
     //更新业务员
-    async updateYWY(id) {
+    async updateYWY(args) {
         let sql = 'UPDATE orders set ywy=? where id=?'
-        let result = await db.query(sql, [id])
+        let result = await db.query(sql, [args.yid, args.id])
         return result
     },
     async updateStateQT(id) {

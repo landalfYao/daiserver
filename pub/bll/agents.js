@@ -1,4 +1,4 @@
-const model = require('./../model/order.js')
+const model = require('./../model/agents.js')
 const retCode = require('./../utils/retcode.js')
 const com = require('../utils/common')
 const app = {
@@ -31,11 +31,11 @@ const app = {
         let result = retCode.Success
         let auth = await com.jwtFun.checkAuth(ctx)
         if (auth.code == 1) {
-            let bkdata = await model[method](method == 'update' || method == 'updateJJR' || method == 'updateYWY' ? form : form.id)
+            let bkdata = await model.update(form)
             if (bkdata.errno) {
                 if (bkdata.errno == 1062) {
                     result = retCode.Fail
-                    result.msg = '该角色名称已存在'
+                    result.msg = '失败'
                 } else {
                     result = retCode.ServerError
                     result.msg = '服务端错误'
@@ -51,7 +51,7 @@ const app = {
         return com.filterReturn(result)
     },
     async getList(ctx) {
-        ctx.request.body.tables = 'orders'
+        ctx.request.body.tables = 'agents,wxuser'
         let auth = await com.jwtFun.checkAuth(ctx)
         if (auth.code == 1) {
             let result = await com.commonSelect.getList(ctx)
