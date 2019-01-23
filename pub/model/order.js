@@ -44,6 +44,11 @@ const app = {
         let result = await db.commonSelect(args)
         return result
     },
+    async getById(id) {
+        let sql = 'select orders.*,y_user.name ywyname,agents.name jjrname from orders left join y_user on orders.ywy = y_user.pk_id left join agents on orders.jjr = agents.wx_id where orders.id=?'
+        let result = await db.query(sql, [id])
+        return result
+    }
 
 }
 

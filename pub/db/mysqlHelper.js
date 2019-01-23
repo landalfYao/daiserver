@@ -66,17 +66,24 @@ const db = {
                 codeMsg: 'argument "tables" not be a null value'
             }
         } else {
-            let where = (wheres ? wheres + ' ' : 'is_delete=0');
+            let where = ''
+            if (wheres != '') {
+                where = ' where ' + wheres + ' '
+            } else if (tables.indexOf('left join') >= 0) {
+                where = ''
+            } else if (tables.indexOf('left join') == -1 && wheres == '') {
+                where = ' where is_delete=0'
+            }
             let sql = 'SELECT ' +
                 (fields ? fields : '*') +
-                ' FROM ' + tables + ' where ' +
+                ' FROM ' + tables + ' ' +
                 where + ' order by ' +
                 (sorts ? sorts : 'create_time asc') + ' limit ' +
                 (pageIndex ? (pageIndex - 1) * (pageSize ? pageSize : 15) : 0) + ',' +
                 (pageSize ? pageSize : 15);
 
             let list = await this.query(sql, []);
-            let total = await this.query('SELECT COUNT(*) total FROM ' + tables + ' where ' + where);
+            let total = await this.query('SELECT COUNT(*) total FROM ' + tables + ' ' + where);
             if (total.length >= 0 && list.length >= 0) {
                 return {
                     list: list,
