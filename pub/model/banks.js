@@ -14,7 +14,12 @@ const app = {
         let result = await db.query(sql, params)
         return result
     },
-
+    async getById(id) {
+        let sql = 'select * from banks where id=?'
+        let params = [id]
+        let result = await db.query(sql, params)
+        return result
+    },
     async getList(args) {
         let result = await db.commonSelect(args)
         return result
