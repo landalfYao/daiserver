@@ -23,6 +23,10 @@ router.post('/update/ywy', async (ctx, next) => {
     let result = await bll.update(ctx, 'updateYWY')
     ctx.body = result;
 })
+router.post('/update/qt', async (ctx, next) => {
+    let result = await bll.update(ctx, 'updateQt')
+    ctx.body = result;
+})
 router.post('/update/state/qt', async (ctx, next) => {
     let result = await bll.update(ctx, 'updateStateQT')
     ctx.body = result;

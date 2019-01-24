@@ -8,8 +8,14 @@ const app = {
         return result
     },
     async update(args) {
-        let sql = 'UPDATE orders set name=?,idcard=?,phone=?,position=?,city=?,gjj=?,sb=?,housetype=?,zxqk=?,area=?,hcar=?,xyqk=?,money=?,date=?,jjr=?,title=?where id = ?'
+        let sql = 'UPDATE orders set name=?,idcard=?,phone=?,position=?,city=?,gjj=?,sb=?,housetype=?,zxqk=?,area=?,hcar=?,xyqk=?,money=?,date=?,jjr=?,title=? where id = ?'
         let params = [args.name, args.idcard, args.phone, args.position, args.city, args.gjj, args.sb, args.housetype, args.zxqk, args.area, args.hcar, args.xyqk, args.money, args.date, args.jjr, args.title, args.id]
+        let result = await db.query(sql, params)
+        return result
+    },
+    async updateQt(args) {
+        let sql = 'UPDATE orders set qdate=? where id = ?'
+        let params = [args.qdate, args.id]
         let result = await db.query(sql, params)
         return result
     },
@@ -27,17 +33,17 @@ const app = {
     },
     async updateStateQT(id) {
         let sql = 'UPDATE orders set state="洽谈中",qt_time=now() where id=?'
-        let result = await db.query(sql, [state, id])
+        let result = await db.query(sql, [id])
         return result
     },
     async updateStateFW(id) {
         let sql = 'UPDATE orders set state="服务中",fw_time=now() where id=?'
-        let result = await db.query(sql, [state, id])
+        let result = await db.query(sql, [id])
         return result
     },
     async updateStateCOM(id) {
         let sql = 'UPDATE orders set state="已完成",com_time=now() where id=?'
-        let result = await db.query(sql, [state, id])
+        let result = await db.query(sql, [id])
         return result
     },
     async getList(args) {
