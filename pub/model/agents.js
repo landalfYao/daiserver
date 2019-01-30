@@ -2,8 +2,8 @@ const db = require('./../db/mysqlHelper.js')
 
 const app = {
     async add(args) {
-        let sql = 'INSERT INTO agents (name,wx_id,price,msg) value(?,?,?,?)'
-        let params = [args.name, args.wx_id, args.price, args.msg]
+        let sql = 'INSERT INTO agents (name,wx_id,price,msg,qrcode) value(?,?,?,?,?)'
+        let params = [args.name, args.wx_id, args.price, args.msg, args.qrcode]
         let result = await db.query(sql, params)
         return result
     },

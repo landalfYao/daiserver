@@ -205,8 +205,6 @@ const user = {
     },
     async getInfoByArea(ctx) {
         let result = retCode.Success
-
-
         let bkdata = await usermodel.getInfoByArea(ctx.request.body.aid)
         if (bkdata.errno) {
             result = retCode.ServerError

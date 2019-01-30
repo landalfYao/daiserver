@@ -12,7 +12,7 @@ const roles = {
         let http = await com.http.request('https://api.weixin.qq.com/sns/jscode2session?appid=' +
             config.APP_ID + '&secret=' + config.APP_SECRET + '&js_code=' +
             form.js_code + '&grant_type=authorization_code', 'GET', {})
-      
+
         let byo = await model.getByOpenid(http.openid)
         if (byo.length == 0) {
             let add = await model.add({
@@ -47,9 +47,8 @@ const roles = {
             result.msg = "添加成功";
         }
         return com.filterReturn(result);
-
     },
-    async updateWX(ctx){
+    async updateWX(ctx) {
         let form = ctx.request.body;
         let result = retCode.Success;
         let bkdata = await model.updateWX(form);
@@ -208,7 +207,7 @@ const roles = {
         }
 
     },
-    async updateDefAddress(ctx){
+    async updateDefAddress(ctx) {
         let form = ctx.request.body
         let result = retCode.Success
         let auth = await com.jwtFun.checkAuth(ctx)

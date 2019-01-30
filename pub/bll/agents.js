@@ -1,25 +1,34 @@
 const model = require('./../model/agents.js')
 const retCode = require('./../utils/retcode.js')
 const com = require('../utils/common')
+const wxtkn = require('../config/wxtoken')
 const app = {
     async add(ctx) {
         let form = ctx.request.body
         let result = retCode.Success
         let auth = await com.jwtFun.checkAuth(ctx)
         if (auth.code == 1) {
-            let bkdata = await model.add(form)
-            if (bkdata.errno) {
-                if (bkdata.errno == 1062) {
-                    result = retCode.Fail
-                    result.msg = '失败'
+            let qr = await wxtkn.unlimitQrcode(form.wx_id)
+            if (qr.code == 1) {
+                form.qrcode = qr.url
+                let bkdata = await model.add(form)
+                if (bkdata.errno) {
+                    if (bkdata.errno == 1062) {
+                        result = retCode.Fail
+                        result.msg = '失败'
+                    } else {
+                        result = retCode.ServerError
+                        result.msg = '服务端错误'
+                    }
                 } else {
-                    result = retCode.ServerError
-                    result.msg = '服务端错误'
+                    result.data = bkdata.insertId
+                    result.msg = '添加成功'
                 }
             } else {
-                result.data = bkdata.insertId
-                result.msg = '添加成功'
+                result = retCode.ServerError
+                result.msg = '二维码生成失败'
             }
+
         } else {
             result = auth
         }
