@@ -14,6 +14,12 @@ const app = {
         let result = await db.query(sql, params)
         return result
     },
+    async getById(args) {
+        let sql = 'select * from agents where wx_id=?'
+        let params = [args.wx_id]
+        let result = await db.query(sql, params)
+        return result
+    },
 
     async getList(args) {
         let result = await db.commonSelect(args)

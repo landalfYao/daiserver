@@ -188,7 +188,7 @@ const user = {
         let result = retCode.Success
         let auth = await com.jwtFun.checkAuth(ctx)
         if (auth.code == 1) {
-            let bkdata = await usermodel.getUserInfo(ctx.request.body.uid)
+            let bkdata = await usermodel.getUserInfo(ctx.request.body.id)
             if (bkdata.errno) {
                 result = retCode.ServerError
                 result.msg = '服务端错误'

@@ -36,7 +36,7 @@ router.post('/update/state/fw', async (ctx, next) => {
     ctx.body = result;
 })
 router.post('/update/state/com', async (ctx, next) => {
-    let result = await bll.update(ctx, 'updateStateCOM')
+    let result = await bll.updateStateCOM(ctx)
     ctx.body = result;
 })
 router.post('/get', async (ctx, next) => {
@@ -45,6 +45,14 @@ router.post('/get', async (ctx, next) => {
 })
 router.post('/get/id', async (ctx, next) => {
     let result = await bll.getById(ctx)
+    ctx.body = result;
+})
+router.post('/get/liu', async (ctx, next) => {
+    let result = await bll.getLiu(ctx)
+    ctx.body = result;
+})
+router.post('/get/liu/total', async (ctx, next) => {
+    let result = await bll.getLiuTotal(ctx)
     ctx.body = result;
 })
 module.exports = router

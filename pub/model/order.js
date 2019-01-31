@@ -1,6 +1,42 @@
 const db = require('./../db/mysqlHelper.js')
 
 const app = {
+
+    async upYWY(w, id) {
+        let sql = 'update y_user set wallets=wallets+' + w + ' where pk_id=' + id
+        let result = await db.query(sql, [])
+        return result
+    },
+    async upJJR(w, id) {
+        let sql = 'update agents set wallet=wallet+' + w + ' where wx_id=' + id
+        let result = await db.query(sql, [])
+        return result
+    },
+    async lius(args) {
+        let sql = 'insert into capitals (order_id,jjr_id,ywy_id,ywy_get,jjr_get,p_get,total_fee) value(?,?,?,?,?,?,?)'
+        let params = [args.order_id, args.jjr_id, args.ywy_id, args.ywy_get, args.jjr_get, args.p_get, args.total_fee]
+        let result = await db.query(sql, params)
+        return result
+    },
+    async getLiuTotal() {
+        let sql = 'SELECT SUM(total_fee) total FROM capitals'
+        let result = await db.query(sql, [])
+        return result
+    },
+    async liugetId(args) {
+        let sql = 'select * from capitals where order_id=?'
+        let params = [args.id]
+        let result = await db.query(sql, params)
+        return result
+    },
+
+    async findShare(wx_id) {
+        let sql = 'select sid from scan_share where wx_id=?'
+        let params = [wx_id]
+        let result = await db.query(sql, params)
+        return result
+    },
+
     async add(args) {
         let sql = 'INSERT INTO orders (name,idcard,phone,position,city,gjj,sb,housetype,zxqk,area,hcar,xyqk,money,date,jjr,title,wx_id) value(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
         let params = [args.name, args.idcard, args.phone, args.position, args.city, args.gjj, args.sb, args.housetype, args.zxqk, args.area, args.hcar, args.xyqk, args.money, args.date, args.jjr, args.title, args.wx_id]

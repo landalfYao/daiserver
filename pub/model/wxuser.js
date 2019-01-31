@@ -1,6 +1,23 @@
 const db = require("./../db/mysqlHelper.js");
 
 const roles = {
+    async insertScan(args) {
+        let sql = "INSERT INTO scan_share (sid,wx_id,types) value(?,?,?)";
+        let params = [args.sid, args.wx_id, args.types];
+        let result = await db.query(sql, params);
+        return result;
+    },
+    async saddnum(type, id) {
+        let temp = ''
+        if (type == 'scan') {
+            temp = ' by_scan=by_scan+1 '
+        } else {
+            temp = ' by_share=by_share+1 '
+        }
+        let sql = 'update wxuser set ' + temp + ' where id=?'
+        let result = await db.query(sql, [id]);
+        return result;
+    },
     async add(args) {
         let sql = "INSERT INTO wxuser (openid) value(?)";
         let params = [args.openid];

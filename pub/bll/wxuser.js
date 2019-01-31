@@ -15,9 +15,17 @@ const roles = {
 
         let byo = await model.getByOpenid(http.openid)
         if (byo.length == 0) {
+
             let add = await model.add({
                 openid: http.openid
             })
+            if (form.sid)
+                await model.insertScan({
+                    wx_id: add.insertId,
+                    sid: form.sid,
+                    types: form.type
+                })
+            await model.saddnum(form.type, form.sid)
             if (add.errno) {
                 result = retCode.Fail
 
