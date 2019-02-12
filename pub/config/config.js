@@ -30,7 +30,7 @@ const development = {
   APP_SECRET: "206dd03f37c7618f0397c5e672337065",
   Mch_id: "1513123291",
   Mch_key: "hzddwlkjyxgs2018ytcdjdlkyl10h1z1",
-  uploadPath: "https://hapi.ypyzy.top/uploads/files/",
+  uploadPath: "https://fdt.landalf.cn/uploads/files/",
   getWxPayOrdrID: function () {
     var myDate = new Date();
     var year = myDate.getFullYear();
