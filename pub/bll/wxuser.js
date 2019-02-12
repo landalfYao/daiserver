@@ -127,6 +127,24 @@ const roles = {
         }
         return com.filterReturn(result);
     },
+    async updatePhone(ctx) {
+        let form = ctx.request.body;
+        let result = retCode.Success;
+        let bkdata = await model.updatePhone(form);
+        if (bkdata.errno) {
+            if (bkdata.errno == 1062) {
+                result = retCode.Fail;
+                result.msg = "失败";
+            } else {
+                result = retCode.ServerError;
+                result.msg = "服务端错误";
+            }
+        } else {
+            result.data = bkdata;
+            result.msg = "修改成功";
+        }
+        return com.filterReturn(result);
+    },
     async updateInfoState(ctx) {
         let form = ctx.request.body;
         let result = retCode.Success;

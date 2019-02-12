@@ -15,6 +15,10 @@ router.post('/update/wx', async (ctx, next) => {
     let result = await bll.updateWX(ctx)
     ctx.body = result;
 })
+router.post('/update/phone', async (ctx, next) => {
+    let result = await bll.updatePhone(ctx)
+    ctx.body = result;
+})
 router.post('/update/def/address', async (ctx, next) => {
     let result = await bll.updateDefAddress(ctx)
     ctx.body = result;
