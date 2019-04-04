@@ -26,8 +26,8 @@ const development = {
     dateStrings: true
   },
 
-  APP_ID: "wx20af16de914f1154",
-  APP_SECRET: "206dd03f37c7618f0397c5e672337065",
+  APP_ID: "wx5ed4d888ad94e77a",
+  APP_SECRET: "69f1e01f7ff06473901e659be2246297",
   Mch_id: "1513123291",
   Mch_key: "hzddwlkjyxgs2018ytcdjdlkyl10h1z1",
   uploadPath: "https://fdt.landalf.cn/uploads/files/",
