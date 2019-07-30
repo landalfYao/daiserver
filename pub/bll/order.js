@@ -58,8 +58,6 @@ const app = {
                     result.msg = '修改成功'
                 }
             }
-
-
         } else {
             result = auth
         }

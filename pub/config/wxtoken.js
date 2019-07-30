@@ -76,7 +76,7 @@ const app = {
             })
 
 
-            let path = "http://localhost:3334/qrcode/" + str + ".png"
+            let path = "https://fdt.landalf.cn/qrcode/" + str + ".png"
             return {
                 code: 1,
                 url: path

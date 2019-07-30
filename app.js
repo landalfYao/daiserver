@@ -21,6 +21,8 @@ const file = require('./routes/file')
 const order = require('./routes/order')
 const agents = require('./routes/agents')
 const banks = require('./routes/banks')
+const carousel = require('./routes/carousel')
+const news = require('./routes/news')
 
 const koaBody = require('koa-body');
 app.use(koaBody({
@@ -93,13 +95,14 @@ app.use(file.routes(), file.allowedMethods())
 app.use(order.routes(), order.allowedMethods())
 app.use(agents.routes(), agents.allowedMethods())
 app.use(banks.routes(), banks.allowedMethods())
+app.use(carousel.routes(),carousel.allowedMethods())
+app.use(news.routes(),news.allowedMethods())
 
 
 // error-handling 
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
-
 
 
 

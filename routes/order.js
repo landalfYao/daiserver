@@ -35,10 +35,18 @@ router.post('/update/state/fw', async (ctx, next) => {
     let result = await bll.update(ctx, 'updateStateFW')
     ctx.body = result;
 })
+router.post('/update/state/cancel', async (ctx, next) => {
+    let result = await bll.update(ctx, 'updateStateCONCEL')
+    ctx.body = result;
+})
 router.post('/update/state/com', async (ctx, next) => {
     let result = await bll.updateStateCOM(ctx)
     ctx.body = result;
 })
+// router.post('/update/state/cancel', async (ctx, next) => {
+//     let result = await bll.updateStateCOM(ctx)
+//     ctx.body = result;
+// })
 router.post('/get', async (ctx, next) => {
     let result = await bll.getList(ctx)
     ctx.body = result;

@@ -20,7 +20,12 @@ const app = {
         let result = await db.query(sql, params)
         return result
     },
-
+    async del (args){
+        let sql = 'delete from agents where id in (?)';
+        let params = [args.ids];
+        let result = await db.query(sql, params)
+        return result
+    },
     async getList(args) {
         let result = await db.commonSelect(args)
         return result

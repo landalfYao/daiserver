@@ -82,6 +82,11 @@ const app = {
         let result = await db.query(sql, [id])
         return result
     },
+    async updateStateCONCEL(id) {
+        let sql = 'UPDATE orders set state="已中断",cancel_time=now() where id=?'
+        let result = await db.query(sql, [id])
+        return result
+    },
     async getList(args) {
         let result = await db.commonSelect(args)
         return result
