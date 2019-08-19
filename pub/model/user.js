@@ -16,6 +16,18 @@ const user = {
     let params = [args.username, args.password]
     return await db.query(sql, params)
   },
+
+  //判断经纪人密码是否正确
+  async checkAgentPwd(args){
+    let sql = 'SELECT * FROM agents WHERE wx_id = ? and  pwd = ?'
+    let params = [args.uid,args.oldPwd]
+    return await db.query(sql, params)
+  },
+  async updateAgentPwd(args){
+    let sql = 'update agents set pwd=? WHERE wx_id = ?'
+    let params = [args.newPwd,args.uid]
+    return await db.query(sql, params)
+  },
   //根据id和password查询用户信息
   async getByIdAndPassword(args) {
     let sql = 'SELECT * FROM y_user WHERE pk_id = ? and pwd = ?'

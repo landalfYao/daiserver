@@ -60,52 +60,75 @@ const user = {
         let auth = await com.jwtFun.checkAuth(ctx)
         let isNull = await this.isPwdNull(form)
         if (isNull.code == 1) {
-            if (auth.code == 1) {
-                form.oldPwd = com.secrets.decypt(form.oldPwd, 'base64', com.ivkey, 'hex', true)
-                form.newPwd = com.secrets.decypt(form.newPwd, 'base64', com.ivkey, 'hex', true)
-                form.confirmPwd = com.secrets.decypt(form.confirmPwd, 'base64', com.ivkey, 'hex', true)
-                if (form.oldPwd == form.newPwd) {
-                    result = retCode.Fail
-                    result.msg = '旧密码与新密码不能相等'
-                } else {
-                    let isOldTrue = await usermodel.getByIdAndPassword({
-                        uid: ctx.header.uid,
-                        password: com.md5(form.oldPwd)
-                    })
-                    if (isOldTrue.errno) {
-                        result = retCode.ServerError
-                        result.msg = '服务端错误'
-                    } else {
-                        if (isOldTrue.length == 1) {
-                            if (form.newPwd == form.confirmPwd) {
-                                let resDa = await usermodel.updatePwd({
-                                    uid: ctx.header.uid,
-                                    password: com.md5(form.newPwd)
-                                })
-                                if (resDa.errno) {
-                                    result = retCode.ServerError
-                                    result.msg = '服务端错误'
-                                } else {
+            if(form.type == 'jjr'){
+                let ck = await usermodel.checkAgentPwd(form);
+                if(ck && ck.length > 0){
+                    if(form.confirmPwd == form.newPwd){
+                        
+                        let ll = await usermodel.updateAgentPwd(form);
+                        if (ll.errno) {
+                            result = retCode.ServerError
+                            result.msg = '服务端错误'
+                        } else {
 
-                                    if (com.loginState.get('y' + ctx.header.uid) == 1) {
-                                        com.loginState.remove('y' + ctx.header.uid)
+                            
+                            result.msg = '密码修改成功'
+                        }
+                    }
+                }else{
+                    result = retCode.Fail
+                    result.msg = '旧密码不正确'
+                }
+            }else{
+
+                if (auth.code == 1) {
+    
+                    form.oldPwd = com.secrets.decypt(form.oldPwd, 'base64', com.ivkey, 'hex', true)
+                    form.newPwd = com.secrets.decypt(form.newPwd, 'base64', com.ivkey, 'hex', true)
+                    form.confirmPwd = com.secrets.decypt(form.confirmPwd, 'base64', com.ivkey, 'hex', true)
+                    if (form.oldPwd == form.newPwd) {
+                        result = retCode.Fail
+                        result.msg = '旧密码与新密码不能相等'
+                    } else {
+                        let isOldTrue = await usermodel.getByIdAndPassword({
+                            uid: ctx.header.uid,
+                            password: com.md5(form.oldPwd)
+                        })
+                        if (isOldTrue.errno) {
+                            result = retCode.ServerError
+                            result.msg = '服务端错误'
+                        } else {
+                            if (isOldTrue.length == 1) {
+                                if (form.newPwd == form.confirmPwd) {
+                                    let resDa = await usermodel.updatePwd({
+                                        uid: ctx.header.uid,
+                                        password: com.md5(form.newPwd)
+                                    })
+                                    if (resDa.errno) {
+                                        result = retCode.ServerError
+                                        result.msg = '服务端错误'
+                                    } else {
+    
+                                        if (com.loginState.get('y' + ctx.header.uid) == 1) {
+                                            com.loginState.remove('y' + ctx.header.uid)
+                                        }
+                                        delete result.uid
+                                        result.msg = '密码修改成功'
                                     }
-                                    delete result.uid
-                                    result.msg = '密码修改成功'
+                                } else {
+                                    result = retCode.Fail
+                                    result.msg = '密码不相等'
                                 }
                             } else {
                                 result = retCode.Fail
-                                result.msg = '密码不相等'
+                                result.msg = '旧密码不正确'
                             }
-                        } else {
-                            result = retCode.Fail
-                            result.msg = '旧密码不正确'
                         }
                     }
+    
+                } else {
+                    return auth
                 }
-
-            } else {
-                return auth
             }
         } else {
             result = isNull
