@@ -16,5 +16,8 @@ router.post('/get', async (ctx, next) => {
     let result = await bll.getList(ctx)
     ctx.body = result;
 })
-
+router.post('/del', async (ctx, next) => {
+    let result = await bll.del(ctx)
+    ctx.body = result;
+})
 module.exports = router

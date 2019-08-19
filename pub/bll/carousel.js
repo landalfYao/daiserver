@@ -95,5 +95,29 @@ const app = {
             return com.filterReturn(auth)
         }
     },
+    async del (ctx){
+        let form = ctx.request.body
+        let result = retCode.Success
+        let auth = await com.jwtFun.checkAuth(ctx)
+        if (auth.code == 1) {
+            let bkdata = await model.del(form)
+            if (bkdata.errno) {
+                if (bkdata.errno == 1062) {
+                    result = retCode.Fail
+                    result.msg = '失败'
+                } else {
+                    result = retCode.ServerError
+                    result.msg = '服务端错误'
+                }
+            } else {
+                result.data = bkdata.changedRows
+                result.msg = '修改成功'
+            }
+
+        } else {
+            result = auth
+        }
+        return com.filterReturn(result)
+    }
 }
 module.exports = app

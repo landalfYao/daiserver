@@ -24,7 +24,12 @@ const app = {
         let result = await db.commonSelect(args)
         return result
     },
-
+    async del (args){
+        let sql = 'delete from carousel where id in (?)';
+        let params = [args.ids];
+        let result = await db.query(sql, params)
+        return result
+    },
 }
 
 module.exports = app

@@ -59,6 +59,10 @@ router.post('/get/liu', async (ctx, next) => {
     let result = await bll.getLiu(ctx)
     ctx.body = result;
 })
+router.post('/get/jjr', async (ctx, next) => {
+    let result = await bll.getLiuByjjr(ctx)
+    ctx.body = result;
+})
 router.post('/get/liu/total', async (ctx, next) => {
     let result = await bll.getLiuTotal(ctx)
     ctx.body = result;

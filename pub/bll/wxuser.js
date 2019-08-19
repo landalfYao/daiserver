@@ -36,6 +36,7 @@ const roles = {
             result.data = byo[0]
             result.data.showPage = 0;
             result.data.dh = '0571-88953112';
+            // result.data.des = '公司深耕金融行业多年，具有稳固的投资、商业 、国有银行资源，核心团队专业程度高、创新能力强、服务态度佳。 “融资渠道广、融资成本低、融资速度快”使我们具备顶尖优势，前期不收取任何费用，致力于打造全方位、一站式；让客户安心、放心、贴心的融资平台。';
         }
 
         return result

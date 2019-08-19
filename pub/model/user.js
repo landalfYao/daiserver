@@ -22,7 +22,12 @@ const user = {
     let params = [args.uid, args.password]
     return await db.query(sql, params)
   },
-
+  async findByPwdAndUsername (args) {
+    let sql = 'select * from agents where username=? and pwd = ?'
+    let params = [args.username,args.pwd]
+    let result = await db.query(sql, params)
+    return result
+},
   //根据username查询用户信息
   async getByUsername(args) {
     let sql = 'SELECT pk_id FROM y_user WHERE username=?'

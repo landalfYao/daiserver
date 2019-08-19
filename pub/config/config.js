@@ -28,8 +28,8 @@ const development = {
 
   APP_ID: "wx5ed4d888ad94e77a",
   APP_SECRET: "69f1e01f7ff06473901e659be2246297",
-  Mch_id: "1513123291",
-  Mch_key: "hzddwlkjyxgs2018ytcdjdlkyl10h1z1",
+  Mch_id: "",
+  Mch_key: "",
   uploadPath: "https://fdt.landalf.cn/uploads/files/",
   getWxPayOrdrID: function () {
     var myDate = new Date();

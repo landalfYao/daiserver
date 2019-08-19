@@ -319,75 +319,101 @@ const user = {
         let result = await this.isParamsNull(form)
 
         if (result.code == 1) {
-            form.password = com.secrets.decypt(form.password, 'base64', com.ivkey, 'hex', true)
+            if(form.type == 'admin'){
 
-            form.password = com.md5(form.password)
-            let res = null
-            //登录方式，手机号/用户名/邮箱
-            let loginStyle = 'username'
-            if (mPattern.test(form.username)) {
-                loginStyle = 'phone'
-            } else {
-                loginStyle = 'username'
-            }
-            let isUser = await usermodel.getByUsername(form)
-            if (isUser.errno) {
-                return {
-                    code: res.errno,
-                    codeMsg: res.code,
-                    msg: '数据异常'
-                }
-            } else {
-                if (isUser.length == 1) {
-                    res = await usermodel.getByUsernameAndPassword(loginStyle, form)
-                    if (res.errno) {
-                        return {
-                            code: res.errno,
-                            codeMsg: res.code,
-                            msg: '数据异常'
-                        }
-                    } else {
-                        if (res.length == 1) {
-                            if (res[0].is_delete == 1) {
-                                result = retCode.Fail
-                                result.msg = '用户已被删除'
-                            } else if (res[0].user_state == 'DISABLE') {
-                                result = retCode.Fail
-                                result.msg = '账户不可用,请联系管理'
-                            } else {
-                                const userToken = {
-                                    pk_id: res[0].pk_id
-                                }
-                                //生成token
-                                const token = await com.jwtFun.sign(userToken)
-                                let rs = retCode.Success
-                                rs.msg = '登录成功'
-                                rs.token = token
-                                rs.data = res[0]
-
-                                //设置登陆态
-                                com.loginState.set('y' + res[0].pk_id, 1)
-
-
-                                return rs
-                            }
-                        } else if (res.length > 1) {
-                            result = retCode.Fail
-                            result.msg = '登录异常'
-                        } else {
-                            result = retCode.UsernameOrPasswordError
-                            result.msg = '密码不正确'
-
-                        }
-                    }
-                } else if (isUser.length > 1) {
-                    result = retCode.Fail
-                    result.msg = '登录异常'
+                form.password = com.secrets.decypt(form.password, 'base64', com.ivkey, 'hex', true)
+    
+                form.password = com.md5(form.password)
+                let res = null
+                //登录方式，手机号/用户名/邮箱
+                let loginStyle = 'username'
+                if (mPattern.test(form.username)) {
+                    loginStyle = 'phone'
                 } else {
-                    result = retCode.UserNotExist
-                    result.msg = '用户不存在'
+                    loginStyle = 'username'
                 }
-
+                let isUser = await usermodel.getByUsername(form)
+                if (isUser.errno) {
+                    return {
+                        code: res.errno,
+                        codeMsg: res.code,
+                        msg: '数据异常'
+                    }
+                } else {
+                    if (isUser.length == 1) {
+                        res = await usermodel.getByUsernameAndPassword(loginStyle, form)
+                        if (res.errno) {
+                            return {
+                                code: res.errno,
+                                codeMsg: res.code,
+                                msg: '数据异常'
+                            }
+                        } else {
+                            if (res.length == 1) {
+                                if (res[0].is_delete == 1) {
+                                    result = retCode.Fail
+                                    result.msg = '用户已被删除'
+                                } else if (res[0].user_state == 'DISABLE') {
+                                    result = retCode.Fail
+                                    result.msg = '账户不可用,请联系管理'
+                                } else {
+                                    const userToken = {
+                                        pk_id: res[0].pk_id
+                                    }
+                                    //生成token
+                                    const token = await com.jwtFun.sign(userToken)
+                                    let rs = retCode.Success
+                                    rs.msg = '登录成功'
+                                    rs.token = token
+                                    rs.data = res[0]
+    
+                                    //设置登陆态
+                                    com.loginState.set('y' + res[0].pk_id, 1)
+    
+    
+                                    return rs
+                                }
+                            } else if (res.length > 1) {
+                                result = retCode.Fail
+                                result.msg = '登录异常'
+                            } else {
+                                result = retCode.UsernameOrPasswordError
+                                result.msg = '密码不正确'
+    
+                            }
+                        }
+                    } else if (isUser.length > 1) {
+                        result = retCode.Fail
+                        result.msg = '登录异常'
+                    } else {
+                        result = retCode.UserNotExist
+                        result.msg = '用户不存在'
+                    }
+    
+                }
+            }else{
+                let bkdata = await usermodel.findByPwdAndUsername({
+                    username: form.username,
+                    pwd: form.password
+                })
+           
+                if (bkdata.errno) {
+                    if (bkdata.errno == 1062) {
+                        result = retCode.Fail
+                        result.msg = '失败'
+                    } else {
+                        result = retCode.ServerError
+                        result.msg = '服务端错误'
+                    }
+                } else {
+                    if(bkdata.length > 0){
+                        result.data = bkdata[0]; 
+                        result.msg = '登录成功'
+                    }else{
+                        result = retCode.ServerError;
+                        result.msg = '用户名或密码错误';
+                    }
+                }
             }
         }
 

@@ -21,6 +21,14 @@ router.post('/get', async (ctx, next) => {
     let result = await bll.getList(ctx)
     ctx.body = result;
 })
+router.post('/login', async (ctx, next) => {
+    let result = await bll.login(ctx)
+    ctx.body = result;
+})
+router.post('/kh', async (ctx, next) => {
+    let result = await bll.getMineKh(ctx)
+    ctx.body = result;
+})
 router.post('/get/id', async (ctx, next) => {
     let result = await bll.getById(ctx)
     ctx.body = result;

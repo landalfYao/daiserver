@@ -23,6 +23,11 @@ const app = {
         let result = await db.query(sql, [])
         return result
     },
+    async getJJRTotal(jjr_id) {
+        let sql = 'SELECT SUM(jjr_get) total FROM capitals where jjr_id=?'
+        let result = await db.query(sql, [jjr_id])
+        return result
+    },
     async liugetId(args) {
         let sql = 'select * from capitals where order_id=?'
         let params = [args.id]
